@@ -1,0 +1,328 @@
+---
+import { Picture } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Sheets from "../components/Sheets.astro";
+import FutureLink from "../components/FutureLink.astro";
+import Icon from "../components/Icon.astro";
+import {
+  CLINICS, HOURS, HOURS_SHORT, NOTE, TELEGRAM, INSTAGRAM, PRICES, SERVICES,
+  HEAD_DOCTOR, DOCTORS, FAQ, FDI_UPPER, FDI_LOWER,
+} from "../data/site";
+import heroMirror from "../assets/hero-mirror.jpg";
+import reception from "../assets/clinic/reception.jpg";
+import corridor from "../assets/clinic/corridor.jpg";
+import soltys from "../assets/doctors/soltys.webp";
+import batrukh from "../assets/doctors/batrukh.webp";
+import kaznokh from "../assets/doctors/kaznokh.webp";
+import maksymkiv from "../assets/doctors/maksymkiv.webp";
+import milovanova from "../assets/doctors/milovanova.webp";
+import perizhok from "../assets/doctors/perizhok.webp";
+import salamin from "../assets/doctors/salamin.webp";
+
+const photos: Record<string, ImageMetadata> = { batrukh, kaznokh, maksymkiv, milovanova, perizhok, salamin };
+
+const title = "Стоматологія у Львові — ELITES, дві клініки | план і ціна";
+const description = "Сімейна стоматологія ELITES у Львові: Леонтовича, 3 і Газова, 7. Ціни від 2 800 грн, план і вартість до лікування, імплантація Straumann. Запис за телефоном.";
+
+const hoursSpec = [
+  { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "20:00" },
+  { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "08:00", closes: "19:00" },
+];
+const jsonLd = [
+  ...CLINICS.map((c) => ({
+    "@context": "https://schema.org",
+    "@type": "Dentist",
+    name: `ELITES, ${c.street}`,
+    telephone: c.tel,
+    email: c.email,
+    address: { "@type": "PostalAddress", streetAddress: c.street, addressLocality: "Львів", addressCountry: "UA" },
+    openingHoursSpecification: hoursSpec,
+    hasMap: c.map,
+    priceRange: "2 800–34 450 грн",
+    sameAs: [INSTAGRAM],
+  })),
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  },
+];
+---
+<Base lang="uk" title={title} description={description}>
+  <Fragment slot="head">
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+  </Fragment>
+
+  <Header slot="header" />
+
+  <!-- 1. hero -->
+  <section id="hero" class="hero" data-rec="R-201,G-R005,MA-R004,R-211,G-R006">
+    <div class="container">
+      <div class="hero__grid">
+        <div class="hero__main">
+          <h1 class="hero__title"><span class="hero__line">Стоматологія <span class="nw">у Львові,</span></span> <span class="hero__line">де все зрозуміло:</span> <span class="hero__line">план, ціна, результат</span></h1>
+          <p class="hero__lead">Сімейна стоматологія для дорослих і дітей: план лікування з цінами ви отримуєте до його початку.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary btn--lg" href="#kliniky" data-sheet-open="sheet-call" data-rec="R-202">Записатися</a>
+            <a class="text-link" href="#online">Онлайн-консультація за знімком</a>
+          </div>
+        </div>
+
+        <ul class="hero__clinics" aria-label="Клініки і телефони">
+          {CLINICS.map((c) => (
+            <li class="crow">
+              <div class="crow__addr">{c.street}</div>
+              <a class="crow__tel num" href={`tel:${c.tel}`}>{c.phone}</a>
+              <div class="crow__hours">{HOURS_SHORT}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="plan">
+        <div class="plan__cell plan__cell--plan" style="--i:0">
+          <p class="plan__label">План</p>
+          <p class="plan__text">Після першого візиту: діагностика, фото всіх зубів і три варіанти лікування з цінами.</p>
+        </div>
+        <div class="plan__cell plan__cell--price" style="--i:1">
+          <p class="plan__label">Ціна</p>
+          <p class="plan__num num">2 800 <span class="plan__cur">грн</span></p>
+          <p class="plan__text">професійна гігієна</p>
+        </div>
+        <div class="plan__cell plan__cell--result" style="--i:2">
+          <Picture
+            src={heroMirror}
+            formats={["avif", "webp"]}
+            widths={[240, 360, 480, 720]}
+            sizes="(min-width: 1024px) 200px, (min-width: 768px) 30vw, 40vw"
+            alt="Пацієнтка ELITES дивиться в дзеркало після лікування, поруч лікарка"
+            class="plan__photo"
+            loading="eager"
+            fetchpriority="high"
+            data-rec="R-402"
+          />
+          <div class="plan__result-text">
+            <p class="plan__label">Результат</p>
+            <p class="plan__rating"><span class="plan__rating-num num">4,9</span> з 5 у Google, 189 відгуків</p>
+          </div>
+        </div>
+      </div>
+      <p class="fdi-edge num" aria-hidden="true">{FDI_UPPER.map((n, i) => <span class:list={["fdi-edge__n", { "fdi-edge__mid": i === 8 }]} data-n={n}></span>)}</p>
+    </div>
+  </section>
+
+  <!-- 2. posluhy -->
+  <section id="posluhy" class="section posluhy" data-rec="R-210,R-211,G-R006">
+    <div class="container">
+      <div class="sec-head">
+        <h2 class="h2">Послуги: з чим ви приходите</h2>
+        <p class="sec-head__text">Сім ситуацій, з якими звертаються пацієнти. Ціни, опубліковані клінікою, стоять у кінці рядка.</p>
+      </div>
+      <div class="index" data-index>
+        {SERVICES.map((s) => (
+          <details class="index__row" open>
+            <summary class="index__sum">
+              <h3 class="index__group">{s.group}</h3>
+              {s.price && <span class="index__price-m num">{s.price}</span>}
+              <Icon name="chevron" />
+            </summary>
+            <div class="index__body">
+              <ul class="index__items">
+                {s.items.map((i) => <li><FutureLink note={NOTE} class="index__item">{i}</FutureLink></li>)}
+              </ul>
+              {s.price && <p class="index__price num">{s.price}</p>}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. pershyi-vizyt -->
+  <section id="pershyi-vizyt" class="wine" data-rec="R-211,G-R006">
+    <div class="container wine__grid">
+      <div class="wine__text">
+        <h2 class="h2">План і ціна — до початку лікування</h2>
+        <p class="wine__flow">
+          <strong>Консультація платна</strong>, її вартість залежить від обсягу огляду. Після першого візиту ви отримуєте
+          <strong>персональний план</strong>: комплексну діагностику, фотопротокол і три варіанти лікування з покроковим описом і цінами.
+          Далі <strong>лікує команда</strong> вузьких спеціалістів.
+        </p>
+        <FutureLink note={NOTE} class="wine__more">Повний прайс</FutureLink>
+      </div>
+      <ul class="prices" data-inview>
+        {PRICES.map((p, i) => (
+          <li class="price" style={`--i:${i}`}>
+            <p class="price__num num">{p.from && <span class="price__from">від </span>}<span class="price__clip">{p.value}</span> <span class="price__cur">грн</span></p>
+            <p class="price__name"><strong>{p.name}</strong>, {p.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. zuby -->
+  <section id="zuby" class="section zuby">
+    <div class="container zuby__grid">
+      <h2 class="h2 zuby__h2">Боремось за кожен зуб</h2>
+      <blockquote class="zuby__quote">
+        <p>Видалення — це втрата. Якщо є хоч найменша надія на збереження — ми прикладаємо максимум зусиль, аби відновити здоров'я ваших зубів.</p>
+      </blockquote>
+      <div class="zuby__text">
+        <p>Після першого візиту ви отримуєте фотопротокол: фото всіх зубів з поясненнями. У плані лікування кожен зуб має свій номер — так його записує лікар.</p>
+      </div>
+      <figure class="formula" data-inview role="img" aria-label="Зубна формула: 32 позиції, від 18 до 48">
+        <div class="formula__jaw" aria-hidden="true">
+          {FDI_UPPER.map((n, i) => <span class="tooth num" style={`--i:${i}`} data-n={n}></span>)}
+        </div>
+        <div class="formula__jaw formula__jaw--low" aria-hidden="true">
+          {FDI_LOWER.map((n, i) => <span class="tooth num" style={`--i:${i + 16}`} data-n={n}></span>)}
+        </div>
+        <figcaption class="formula__cap" aria-hidden="true">Верхня щелепа зверху, нижня знизу.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 5. likari -->
+  <section id="likari" class="section likari">
+    <div class="container likari__grid">
+      <div class="likari__head">
+        <h2 class="h2">Лікарі</h2>
+        <p class="sec-head__text">Головний лікар і шість спеціалістів: терапевти, ортодонт, ендодонтист, пародонтолог і дитячий стоматолог.</p>
+      </div>
+      <figure class="chief">
+        <Picture src={soltys} formats={["avif", "webp"]} fallbackFormat="webp" widths={[320, 440]} sizes="(min-width: 1024px) 440px, 80vw" alt="Солтис Михайло Васильович, головний лікар ELITES" class="chief__photo" />
+        <figcaption>
+          <h3 class="chief__name">{HEAD_DOCTOR.name}</h3>
+          <p class="chief__role">{HEAD_DOCTOR.role}</p>
+          <p class="chief__years num">{HEAD_DOCTOR.years}</p>
+        </figcaption>
+      </figure>
+      <div class="team">
+        <ul class="team__list">
+          {DOCTORS.map((d) => (
+            <li class="doc">
+              <Picture src={photos[d.key]} formats={["avif", "webp"]} fallbackFormat="webp" widths={[200, 280]} sizes="(min-width: 1024px) 200px, 44vw" alt={d.name} class="doc__photo" />
+              <h3 class="doc__name">{d.name}</h3>
+              <p class="doc__role">{d.role}</p>
+            </li>
+          ))}
+        </ul>
+        <FutureLink note={NOTE} class="team__more">Уся команда</FutureLink>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. online -->
+  <section id="online" class="section online">
+    <div class="container">
+      <div class="online__grid">
+        <div class="online__head">
+          <h2 class="h2">Онлайн-консультація за знімком</h2>
+          <p class="sec-head__text">Якщо ви не у Львові або хочете знати план заздалегідь.</p>
+        </div>
+        <div class="online__flow">
+          <div class="online__step">
+            <p class="online__label">Ви надсилаєте</p>
+            <p class="online__big">КТ або ОПТГ</p>
+          </div>
+          <span class="online__rule" aria-hidden="true"></span>
+          <div class="online__step">
+            <p class="online__label">Лікар готує</p>
+            <p class="online__big">попередній план і орієнтовну вартість</p>
+          </div>
+        </div>
+        <div class="online__actions">
+          <a class="btn btn--primary" href={TELEGRAM} rel="noopener" target="_blank"><Icon name="chat" /><span>Написати в Telegram</span></a>
+          <a class="btn btn--outline" href={CLINICS[0].viber}><Icon name="chat" /><span>Написати у Viber</span></a>
+          <p class="online__note">Як передати файл, уточніть у менеджера.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. faq -->
+  <section id="faq" class="section faq" data-rec="R-210">
+    <div class="container faq__grid">
+      <h2 class="h2">Питання перед візитом</h2>
+      <div class="faq__list">
+        {FAQ.map((f) => (
+          <details class="faq__item">
+            <summary class="faq__q"><h3>{f.q}</h3><Icon name="chevron" /></summary>
+            <p class="faq__a">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. kliniky -->
+  <section id="kliniky" class="section kliniky" data-rec="R-201,G-R005,MA-R004">
+    <div class="container">
+      <div class="kliniky__head">
+        <h2 class="h2">Дві клініки ELITES у Львові</h2>
+        <p class="kliniky__facts"><span class="num">9</span> років, <span class="num">3000</span> пацієнтів, <span class="num">4,9</span> з 5 у Google за 189 відгуками.</p>
+      </div>
+      <figure class="kliniky__photos">
+        <div class="kgallery">
+          <Picture src={reception} formats={["avif", "webp"]} widths={[480, 640, 960]} sizes="(min-width: 1280px) 628px, 50vw" alt="Ресепшн з вивіскою ELITES" class="kphoto__img" loading="lazy" />
+          <Picture src={corridor} formats={["avif", "webp"]} widths={[480, 640, 960]} sizes="(min-width: 1280px) 628px, 50vw" alt="Коридор з картинами в інтер'єрі ELITES" class="kphoto__img kphoto__img--corridor" loading="lazy" />
+        </div>
+        <figcaption>Інтер'єр клінік ELITES</figcaption>
+      </figure>
+      <div class="kliniky__cols">
+        {CLINICS.map((c) => (
+          <article class="clinic">
+            <h3 class="clinic__street">{c.street}</h3>
+            <a class="clinic__tel num" href={`tel:${c.tel}`}>{c.phone}</a>
+            <p class="clinic__hours">{HOURS}</p>
+            <p class="clinic__mail"><a class="text-link" href={`mailto:${c.email}`}>{c.email}</a></p>
+            <div class="clinic__actions">
+              <a class="btn btn--primary" href={`tel:${c.tel}`}><Icon name="phone" /><span>Подзвонити</span></a>
+              {c.viber && <a class="btn btn--outline" href={c.viber}><span>Viber</span></a>}
+              <a class="btn btn--outline" href={TELEGRAM} rel="noopener" target="_blank"><span>Telegram</span></a>
+            </div>
+            <p class="clinic__route"><a class="text-link" href={c.map} rel="noopener" target="_blank"><Icon name="pin" /><span>Маршрут на карті</span></a></p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <footer slot="footer" class="ftr">
+    <div class="container ftr__grid">
+      <div class="ftr__brand">
+        <a class="logo logo--dark" href="#hero"><span class="visually-hidden">На початок сторінки: </span>ELITES</a>
+        <p class="ftr__tag">Зрозуміла стоматологія у Львові</p>
+        <a class="ftr__insta" href={INSTAGRAM} rel="noopener" target="_blank" data-rec="R-205,MA-R002,S-R001">Instagram @elites_dental</a>
+      </div>
+      {CLINICS.map((c) => (
+        <div class="ftr__clinic">
+          <p class="ftr__street">{c.street}</p>
+          <a class="ftr__tel num" href={`tel:${c.tel}`}>{c.phone}</a>
+          <p>{HOURS}</p>
+          <a class="ftr__mail" href={`mailto:${c.email}`}>{c.email}</a>
+        </div>
+      ))}
+      <ul class="ftr__links">
+        <li><FutureLink note={NOTE}>Про клініку</FutureLink></li>
+        <li><FutureLink note={NOTE}>Блог</FutureLink></li>
+        <li><FutureLink note={NOTE}>Політика конфіденційності</FutureLink></li>
+      </ul>
+      <p class="ftr__copy">© 2026 ELITES</p>
+    </div>
+  </footer>
+
+  <Fragment slot="end">
+    <nav class="actionbar" aria-label="Швидкий зв'язок" data-actionbar data-rec="R-201,G-R005,MA-R004">
+      <a class="actionbar__btn actionbar__btn--call" href="#kliniky" data-sheet-open="sheet-call"><Icon name="phone" /><span>Подзвонити</span></a>
+      <a class="actionbar__btn" href="#kliniky" data-sheet-open="sheet-write"><Icon name="chat" /><span>Написати</span></a>
+    </nav>
+    <Sheets />
+  </Fragment>
+</Base>
+
+<script>
+  import "../scripts/site.ts";
+</script>

@@ -1,0 +1,59 @@
+/* Hallmark · shape: treatment-plan sheet · genre: modern-minimal · theme: custom · job: book · idea: "Сторінка як зрозумілий план лікування" · vibe: "ясно, чесно, точно, спокійно, по-лікарськи"
+ * paper: #FFFFFF · accent: #A61840 · display: Geologica · body: IBM Plex Sans · hero: H1 зліва на 7 колонках, справа дві клініки з номерами і годинами, під ними лист плану з трьох різних клітинок (текст, ціна числом, фото) · nav: sticky white bar, five anchors, two phones with clinic names, one action · footer: compact graphite band with two clinics, e-mail and Instagram · imagery: client photos · signature: зубна формула FDI 18…48, всі 32 позиції
+ * axes: light/grotesk-sans/chromatic-red · posture: committed · surface: absolute · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: E (imagery), only one real patient photo exists, so the plan sheet and prices carry the page typographically instead of filler photos */
+/* Hallmark · waive 7b · --color-bg: #FFFFFF and white text on wine/graphite are in design/concept.md veon-concept colors · approved concept: the page is the white sheet of a treatment plan (priority 2 over Hallmark) */
+/* Hallmark · answered F4 · one filled primary recipe (.btn--primary, wine), outline buttons and the action bar reuse it for the same action Записатися / Подзвонити, nothing else is filled */
+/* Hallmark · answered F20 · the third item of .online__actions is the note under the two messenger buttons, it spans the row on purpose */
+/* Hallmark · waive 44c · the patient photo sits in the third cell of the plan sheet under the headline, not beside it · approved concept: the hero is a treatment plan sheet whose third cell carries the photo below the headline and clinics */
+/* Client design tokens from design/concept.md (veon-concept: colors, fonts). */
+:root {
+  --color-bg: #FFFFFF;
+  --color-surface: #F3EFEF;
+  --color-text: #222024;
+  --color-muted: #5D5860;
+  --color-accent: #A61840;
+  --color-accent-hover: #7F1030;
+  --color-on-accent: #FFFFFF;
+  --color-accent-ink: var(--color-on-accent);
+  --color-dark: #2C2A2F;
+  --color-on-dark: #FFFFFF;
+  --color-on-dark-muted: #C9C3C7;
+  --color-accent-on-dark: #E2758F;
+  --color-line: #E2DCDD;
+  --color-line-strong: #8E878C;
+  --color-line-on-accent: rgb(255 255 255 / 0.32);
+  --color-scrim: rgb(34 32 36 / 0.48);
+
+  --font-display: "Geologica Variable", "Geologica", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+
+  /* Type scale 1.25, base 17 */
+  --fs-14: 0.875rem;
+  --fs-17: 1.0625rem;
+  --fs-21: 1.3125rem;
+  --fs-27: clamp(1.375rem, 1.1rem + 0.9vw, 1.6875rem);
+  --fs-42: clamp(1.875rem, 1.3rem + 1.9vw, 2.625rem);
+  --fs-h1: clamp(2.25rem, 0.9rem + 4.4vw, 4.5rem);
+  --fs-price: clamp(3rem, 1.2rem + 5.6vw, 6.5rem);
+
+  /* Spacing, step 8 */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-5: 2.5rem;
+  --s-8: 4rem;
+  --s-13: 6.5rem;
+  --section-y: clamp(4rem, 2.6rem + 4.4vw, 6.5rem);
+
+  --radius: 6px;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 500ms;
+  --space: clamp(1.5rem, 0.57rem + 3.81vw, 4rem);
+  --container: 1280px;
+  --gutter: 1.5rem;
+  --header-h: 60px;
+}
+@media (min-width: 1024px) {
+  :root { --header-h: 72px; }
+}

@@ -1,0 +1,54 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { CLINICS, NOTE } from "../data/site";
+
+const nav = [
+  { href: "#posluhy", label: "Послуги" },
+  { href: "#pershyi-vizyt", label: "Ціни" },
+  { href: "#likari", label: "Лікарі" },
+  { href: "#online", label: "Онлайн-консультація" },
+  { href: "#kliniky", label: "Клініки" },
+];
+---
+<header class="hdr" data-header>
+  <div class="container hdr__in">
+    <a class="logo" href="#hero"><span class="visually-hidden">На початок сторінки: </span>ELITES</a>
+
+    <nav class="hdr__nav" aria-label="Розділи сторінки">
+      <ul>
+        {nav.map((n) => <li><a class="hdr__link" href={n.href}>{n.label}</a></li>)}
+        <li><FutureLink note={NOTE} class="hdr__link hdr__lang">EN</FutureLink></li>
+      </ul>
+    </nav>
+
+    <ul class="hdr__phones" data-rec="R-201,G-R005,MA-R004">
+      {CLINICS.map((c) => (
+        <li><a class="hdr__phone" href={`tel:${c.tel}`}><span class="hdr__phone-label">{c.short}</span><span class="num">{c.phone}</span></a></li>
+      ))}
+    </ul>
+
+    <a class="btn btn--primary hdr__cta" href="#kliniky" data-sheet-open="sheet-call" data-rec="R-202">Записатися</a>
+
+    <a class="hdr__icon hdr__call" href="#kliniky" data-sheet-open="sheet-call" data-rec="R-201,G-R005,MA-R004">
+      <Icon name="phone" size={22} /><span class="visually-hidden">Подзвонити: оберіть клініку</span>
+    </a>
+
+    <details class="mmenu" data-mmenu>
+      <summary class="hdr__icon"><Icon name="menu" size={22} /><span class="visually-hidden">Меню</span></summary>
+      <div class="mmenu__panel">
+        <nav aria-label="Меню розділів">
+          <ul class="mmenu__list">
+            {nav.map((n) => <li><a class="mmenu__link" href={n.href}>{n.label}</a></li>)}
+            <li><FutureLink note={NOTE} class="mmenu__link">EN</FutureLink></li>
+          </ul>
+        </nav>
+        <ul class="mmenu__phones">
+          {CLINICS.map((c) => (
+            <li><span class="mmenu__addr">{c.street}</span><a class="mmenu__tel num" href={`tel:${c.tel}`}>{c.phone}</a></li>
+          ))}
+        </ul>
+      </div>
+    </details>
+  </div>
+</header>
